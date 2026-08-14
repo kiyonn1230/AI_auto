@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AGENT DECK — AI Agent Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08090b;
+    --bg-alt:#0c0e11;
+    --panel:#101216;
+    --panel-hover:#14171c;
+    --border:#212429;
+    --border-soft:#191c21;
+    --text-1:#e9eaee;
+    --text-2:#9296a1;
+    --text-3:#5b5f68;
+    --core:#8b7cfa;
+    --core-soft:rgba(139,124,250,.14);
+    --growth:#f2b84b;
+    --tech:#56c2ff;
+    --finance:#3fd68c;
+    --support:#ff7a85;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text-1);
+    font-family:var(--sans);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  .deck{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- background ---------- */
+  .grid-bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background-image:
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 85%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 85%);
+    opacity:.55;
+    pointer-events:none;
+  }
+  .aura{
+    position:fixed;
+    top:-10%;
+    left:50%;
+    transform:translateX(-50%);
+    width:900px;
+    height:600px;
+    background:radial-gradient(circle, rgba(139,124,250,.16) 0%, rgba(139,124,250,0) 70%);
+    z-index:0;
+    pointer-events:none;
+    animation:breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ opacity:.7; transform:translateX(-50%) scale(1); }
+    50%{ opacity:1; transform:translateX(-50%) scale(1.06); }
+  }
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 28px;
+    border-bottom:1px solid var(--border-soft);
+    backdrop-filter:blur(6px);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    letter-spacing:.12em;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-1);
+  }
+  .brand-mark{
+    width:22px;height:22px;
+    border:1px solid var(--core);
+    border-radius:5px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--core);
+    font-size:11px;
+    box-shadow:0 0 14px rgba(139,124,250,.35);
+    transform:rotate(45deg);
+  }
+  .brand-mark span{transform:rotate(-45deg);}
+  .brand small{
+    color:var(--text-3);
+    font-weight:500;
+    margin-left:6px;
+  }
+
+  .topbar-right{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-2);
+    letter-spacing:.05em;
+  }
+  .live-pill{
+    display:flex;align-items:center;gap:7px;
+    padding:5px 10px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:var(--panel);
+  }
+  .live-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--finance);
+    box-shadow:0 0 8px var(--finance);
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;} 50%{opacity:.35;}
+  }
+  #clock{color:var(--text-2);}
+
+  /* ---------- project tabs ---------- */
+  .tabbar{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 28px;
+    border-bottom:1px solid var(--border-soft);
+    overflow-x:auto;
+  }
+  .tabbar-label{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.14em;
+    color:var(--text-3);
+    margin-right:6px;
+    flex-shrink:0;
+  }
+  .ptab{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.03em;
+    color:var(--text-2);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:7px 14px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s;
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+  .ptab:hover{ color:var(--text-1); border-color:#2c2f36; }
+  .ptab.active{
+    color:#0c0a17;
+    background:var(--core);
+    border-color:var(--core);
+    font-weight:700;
+  }
+  .ptab .pdot{ width:5px;height:5px;border-radius:50%; background:currentColor; opacity:.65; flex-shrink:0; }
+  .ptab-add{
+    border-style:dashed;
+    color:var(--text-3);
+    background:transparent;
+    cursor:default;
+  }
+  .ptab-add:hover{ color:var(--text-2); border-color:#33363d; }
+
+  /* ---------- stage ---------- */
+  .stage{
+    position:relative;
+    z-index:1;
+    flex:1;
+    padding:56px 28px 40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.22em;
+    color:var(--text-3);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .stage-title{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-.01em;
+    margin:0 0 6px;
+    text-align:center;
+  }
+  .stage-sub{
+    font-size:13.5px;
+    color:var(--text-2);
+    margin:0 0 46px;
+    text-align:center;
+    max-width:480px;
+  }
+
+  /* connectors */
+  svg.connectors{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:0;
+    overflow:visible;
+  }
+  svg.connectors path{
+    fill:none;
+    stroke:var(--border);
+    stroke-width:1.4;
+  }
+  svg.connectors path.flow{
+    stroke:var(--core);
+    stroke-opacity:.55;
+    stroke-dasharray:3 7;
+    animation:dash 2.4s linear infinite;
+  }
+  @keyframes dash{ to{ stroke-dashoffset:-40; } }
+
+  /* conductor node */
+  .conductor{
+    position:relative;
+    z-index:2;
+    width:320px;
+    background:linear-gradient(180deg, var(--panel), var(--bg-alt));
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 22px 18px;
+    text-align:center;
+    box-shadow:0 0 0 1px rgba(139,124,250,.06), 0 20px 60px -20px rgba(139,124,250,.25);
+  }
+  .conductor-badge{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.16em;
+    color:var(--core);
+    background:var(--core-soft);
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:20px;
+    margin-bottom:12px;
+  }
+  .conductor-icon{
+    width:46px;height:46px;
+    margin:0 auto 12px;
+    border-radius:12px;
+    background:var(--core-soft);
+    border:1px solid rgba(139,124,250,.4);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--core);
+    font-size:20px;
+  }
+  .conductor-title{
+    font-family:var(--mono);
+    font-weight:700;
+    letter-spacing:.08em;
+    font-size:15px;
+    margin-bottom:4px;
+  }
+  .conductor-sub{
+    font-size:11.5px;
+    color:var(--text-3);
+    margin-bottom:16px;
+  }
+  .conductor-chat{
+    display:flex;
+    gap:6px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:5px;
+  }
+  .conductor-chat input{
+    flex:1;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--text-1);
+    font-family:var(--sans);
+    font-size:12px;
+    padding:6px 8px;
+    width:0;
+  }
+  .conductor-chat input::placeholder{ color:var(--text-3); }
+  .conductor-chat button{
+    background:var(--core);
+    color:#0c0a17;
+    border:none;
+    border-radius:6px;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:11px;
+    padding:0 14px;
+    cursor:pointer;
+    transition:opacity .15s;
+  }
+  .conductor-chat button:hover{ opacity:.85; }
+
+  /* departments */
+  .departments{
+    position:relative;
+    z-index:2;
+    margin-top:56px;
+    width:100%;
+    max-width:1080px;
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:16px;
+  }
+  @media (max-width: 900px){
+    .departments{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width: 560px){
+    .departments{ grid-template-columns:1fr; }
+  }
+
+  .dept{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:13px;
+    overflow:hidden;
+    align-self:start;
+  }
+  .dept[data-dept="growth"]{ --dc: var(--growth); }
+  .dept[data-dept="tech"]{ --dc: var(--tech); }
+  .dept[data-dept="finance"]{ --dc: var(--finance); }
+  .dept[data-dept="support"]{ --dc: var(--support); }
+
+  .dept-head{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:13px 14px;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--border-soft);
+    cursor:pointer;
+    color:inherit;
+    font-family:var(--sans);
+    text-align:left;
+  }
+  .dept-icon{
+    width:22px;height:22px;
+    border-radius:6px;
+    background:color-mix(in srgb, var(--dc) 16%, transparent);
+    color:var(--dc);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;
+    flex-shrink:0;
+  }
+  .dept-name{
+    font-family:var(--mono);
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:var(--text-1);
+    flex:1;
+  }
+  .dept-count{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--text-3);
+  }
+  .chevron{
+    color:var(--text-3);
+    font-size:11px;
+    transition:transform .2s;
+    margin-left:2px;
+  }
+  .dept.collapsed .chevron{ transform:rotate(-90deg); }
+  .dept.collapsed .dept-body{ display:none; }
+
+  .dept-body{ padding:6px 8px 10px; }
+
+  .agent-row{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:8px 8px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .12s;
+  }
+  .agent-row:hover{ background:var(--panel-hover); }
+  .agent-row.active{ background:var(--panel-hover); box-shadow:inset 0 0 0 1px var(--border); }
+
+  .dot{
+    width:6px;height:6px;border-radius:50%;
+    flex-shrink:0;
+  }
+  .dot.online{ background:var(--finance); box-shadow:0 0 6px var(--finance); }
+  .dot.idle{ background:var(--growth); box-shadow:0 0 6px var(--growth); }
+
+  .agent-name{
+    font-size:12.5px;
+    color:var(--text-1);
+    flex:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .tag{
+    font-family:var(--mono);
+    font-size:9px;
+    color:var(--text-3);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:2px 5px;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  /* status bar */
+  .statusbar{
+    position:relative;
+    z-index:2;
+    border-top:1px solid var(--border-soft);
+    padding:12px 28px;
+    display:flex;
+    justify-content:center;
+    gap:26px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--text-3);
+    letter-spacing:.04em;
+  }
+  .statusbar b{ color:var(--text-2); font-weight:600; }
+
+  /* inspector panel */
+  .inspector{
+    position:fixed;
+    top:0; right:0;
+    height:100vh;
+    width:300px;
+    background:var(--bg-alt);
+    border-left:1px solid var(--border);
+    z-index:10;
+    transform:translateX(100%);
+    transition:transform .28s ease;
+    padding:20px;
+    font-family:var(--sans);
+    display:flex;
+    flex-direction:column;
+  }
+  .inspector.open{ transform:translateX(0); }
+  .inspector-close{
+    align-self:flex-end;
+    background:none;
+    border:1px solid var(--border);
+    color:var(--text-2);
+    border-radius:6px;
+    width:26px;height:26px;
+    cursor:pointer;
+    font-size:13px;
+    margin-bottom:18px;
+  }
+  .insp-label{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    color:var(--text-3);
+    margin-bottom:6px;
+  }
+  .insp-name{ font-size:18px; font-weight:700; margin-bottom:2px; }
+  .insp-dept{ font-family:var(--mono); font-size:11px; color:var(--dc,var(--core)); margin-bottom:20px; }
+  .insp-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .insp-stat{
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:10px;
+  }
+  .insp-stat b{ display:block; font-size:17px; font-weight:700; }
+  .insp-stat span{ font-family:var(--mono); font-size:9.5px; color:var(--text-3); letter-spacing:.06em; }
+  .insp-tools{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .insp-log{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--text-2);
+    line-height:1.9;
+    border-top:1px solid var(--border-soft);
+    padding-top:14px;
+  }
+  .insp-log div span{ color:var(--text-3); margin-right:8px; }
+
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:9;
+    opacity:0; pointer-events:none;
+    transition:opacity .25s;
+  }
+  .overlay.open{ opacity:1; pointer-events:auto; }
+
+  @media (prefers-reduced-motion: reduce){
+    .aura, .live-dot, svg.connectors path.flow{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+  <div class="grid-bg"></div>
+  <div class="aura"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"><span>◆</span></div>
+      AGENT DECK <small>/ operations</small>
+    </div>
+    <div class="topbar-right">
+      <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+      <span id="clock">--:--:--</span>
+    </div>
+  </header>
+
+  <nav class="tabbar">
+    <span class="tabbar-label">PROJECTS</span>
+    <div id="projectTabs" style="display:flex;gap:8px;"></div>
+    <button class="ptab ptab-add" title="デモでは2プロジェクトを表示中。同じデータ構造をコピーすれば追加できます">＋ 追加</button>
+  </nav>
+
+  <main class="stage">
+    <div class="eyebrow" id="stageEyebrow">Command Deck</div>
+    <h1 class="stage-title" id="stageTitle">—</h1>
+    <p class="stage-sub" id="stageSub">—</p>
+
+    <svg class="connectors" id="connectors"></svg>
+
+    <div class="conductor" id="conductor">
+      <div class="conductor-badge">AI HEAD</div>
+      <div class="conductor-icon">◆</div>
+      <div class="conductor-title">CONDUCTOR</div>
+      <div class="conductor-sub" id="conductorSub">Orchestration Core · Super Agent</div>
+      <div class="conductor-chat">
+        <input type="text" id="conductorInput" placeholder="Conductorにタスクを依頼する…" />
+        <button>Send</button>
+      </div>
+    </div>
+
+    <div class="departments" id="departments"></div>
+  </main>
+
+  <footer class="statusbar">
+    <span>AGENTS ONLINE <b id="statAgents">—</b></span>
+    <span>TASKS TODAY <b id="statTasks">—</b></span>
+    <span>UPTIME <b>99.2%</b></span>
+    <span>DEPARTMENTS <b id="statDepts">—</b></span>
+  </footer>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeInspector()"></div>
+<aside class="inspector" id="inspector">
+  <button class="inspector-close" onclick="closeInspector()">✕</button>
+  <div class="insp-label">AGENT PROFILE</div>
+  <div class="insp-name" id="insp-name">—</div>
+  <div class="insp-dept" id="insp-dept">—</div>
+  <div class="insp-stats">
+    <div class="insp-stat"><b id="insp-tasks">—</b><span>TASKS TODAY</span></div>
+    <div class="insp-stat"><b id="insp-uptime">—</b><span>UPTIME</span></div>
+  </div>
+  <div class="insp-label">CONNECTED TOOLS</div>
+  <div class="insp-tools" id="insp-tools"></div>
+  <div class="insp-log" id="insp-log"></div>
+</aside>
+
+<script>
+  /* ---------------- data: one entry per project ---------------- */
+  const PROJECTS = {
+    osakafinds: {
+      label: 'OsakaFinds',
+      eyebrow: 'Command Deck / E-commerce',
+      title: 'あなたのAI社員たちを、ひと目で。',
+      sub: 'Shopee Singaporeでのドロップシッピング運営を、Conductorと4部門のエージェントが分担します。',
+      conductorSub: 'Orchestration Core · OsakaFinds',
+      chatPlaceholder: 'OsakaFindsのタスクをConductorに依頼する…',
+      depts: [
+        { key:'growth', name:'GROWTH', agents:[
+          {name:'Listing Agent', tag:'Shopee', tools:['Shopee','SEO'], status:'online'},
+          {name:'Ad Optimizer', tag:'Ads', tools:['Meta Ads','Budget'], status:'online'},
+          {name:'SEO Agent', tag:'SEO', tools:['Keywords'], status:'idle'},
+          {name:'Content Agent', tag:'Content', tools:['Canva','Copy'], status:'online'},
+          {name:'Inventory / Pricing Agent', tag:'Repricing', tools:['Stock','Repricing'], status:'online'}
+        ]},
+        { key:'tech', name:'TECH', agents:[
+          {name:'Infra Monitor', tag:'Infra', tools:['Vercel','Uptime'], status:'online'},
+          {name:'Deploy Bot', tag:'CI/CD', tools:['GitHub','CI'], status:'online'},
+          {name:'Data Pipeline', tag:'DB', tools:['Supabase'], status:'online'},
+          {name:'QA Agent', tag:'QA', tools:['Tests'], status:'idle'}
+        ]},
+        { key:'finance', name:'FINANCE', agents:[
+          {name:'Ledger Agent', tag:'Stripe', tools:['Stripe'], status:'online'},
+          {name:'Invoice Bot', tag:'Invoices', tools:['PayPal'], status:'online'},
+          {name:'Forecast Agent', tag:'Forecast', tools:['Cash Flow'], status:'idle'},
+          {name:'Margin Tracker', tag:'Margin', tools:['Revenue','Margin'], status:'online'}
+        ]},
+        { key:'support', name:'SUPPORT', agents:[
+          {name:'Inbox Agent', tag:'Email', tools:['Gmail'], status:'online'},
+          {name:'Refund Bot', tag:'Refunds', tools:['PayPal'], status:'online'},
+          {name:'FAQ Agent', tag:'Chat', tools:['Chat'], status:'online'},
+          {name:'Buyer Inquiry Agent', tag:'Shopee', tools:['Shopee Chat'], status:'online'}
+        ]}
+      ]
+    },
+    saas: {
+      label: 'サンプル：SaaSプロダクト',
+      eyebrow: 'Command Deck / Template',
+      title: '別プロジェクトは、別の部門構成で。',
+      sub: 'プロジェクトを切り替えると、Conductorと部門ごとまるごと入れ替わります。これはテンプレート例です。',
+      conductorSub: 'Orchestration Core · Sample SaaS',
+      chatPlaceholder: 'このプロジェクトのタスクをConductorに依頼する…',
+      depts: [
+        { key:'growth', name:'GROWTH', agents:[
+          {name:'Landing Page Agent', tag:'SEO', tools:['SEO'], status:'online'},
+          {name:'SNS Agent', tag:'X', tools:['X / Twitter'], status:'idle'}
+        ]},
+        { key:'tech', name:'PRODUCT', agents:[
+          {name:'Feature Agent', tag:'Roadmap', tools:['Roadmap'], status:'online'},
+          {name:'Bug Triage Agent', tag:'GitHub', tools:['GitHub'], status:'online'},
+          {name:'QA Agent', tag:'Tests', tools:['Tests'], status:'idle'}
+        ]},
+        { key:'finance', name:'FINANCE', agents:[
+          {name:'Billing Agent', tag:'Stripe', tools:['Stripe'], status:'online'},
+          {name:'MRR Tracker', tag:'MRR', tools:['MRR'], status:'online'}
+        ]},
+        { key:'support', name:'SUPPORT', agents:[
+          {name:'Inbox Agent', tag:'Email', tools:['Gmail'], status:'online'},
+          {name:'Onboarding Agent', tag:'Docs', tools:['Docs'], status:'online'}
+        ]}
+      ]
+    }
+  };
+
+  const deptColors = { growth:'#f2b84b', tech:'#56c2ff', finance:'#3fd68c', support:'#ff7a85' };
+  let currentProject = 'osakafinds';
+
+  /* ---------------- clock ---------------- */
+  function tick(){
+    const d = new Date();
+    document.getElementById('clock').textContent = d.toLocaleTimeString('ja-JP', {hour12:false});
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------------- render tabs ---------------- */
+  function renderTabs(){
+    const wrap = document.getElementById('projectTabs');
+    wrap.innerHTML = '';
+    Object.keys(PROJECTS).forEach(id=>{
+      const p = PROJECTS[id];
+      const btn = document.createElement('button');
+      btn.className = 'ptab' + (id === currentProject ? ' active' : '');
+      btn.innerHTML = '<span class="pdot"></span>' + p.label;
+      btn.onclick = () => switchProject(id);
+      wrap.appendChild(btn);
+    });
+  }
+
+  /* ---------------- render project ---------------- */
+  function renderProject(id){
+    const p = PROJECTS[id];
+
+    document.getElementById('stageEyebrow').textContent = p.eyebrow;
+    document.getElementById('stageTitle').textContent = p.title;
+    document.getElementById('stageSub').textContent = p.sub;
+    document.getElementById('conductorSub').textContent = p.conductorSub;
+    document.getElementById('conductorInput').placeholder = p.chatPlaceholder;
+
+    const deptsWrap = document.getElementById('departments');
+    deptsWrap.innerHTML = '';
+
+    let totalAgents = 0, onlineAgents = 0;
+
+    p.depts.forEach(dept=>{
+      totalAgents += dept.agents.length;
+      dept.agents.forEach(a=>{ if(a.status === 'online') onlineAgents++; });
+
+      const section = document.createElement('section');
+      section.className = 'dept';
+      section.dataset.dept = dept.key;
+
+      const head = document.createElement('button');
+      head.className = 'dept-head';
+      head.onclick = () => { section.classList.toggle('collapsed'); drawConnectors(); };
+      head.innerHTML = `
+        <span class="dept-icon">◆</span>
+        <span class="dept-name">${dept.name}</span>
+        <span class="dept-count">${dept.agents.length}</span>
+        <span class="chevron">⌄</span>`;
+      section.appendChild(head);
+
+      const body = document.createElement('div');
+      body.className = 'dept-body';
+      dept.agents.forEach(a=>{
+        const row = document.createElement('div');
+        row.className = 'agent-row';
+        row.innerHTML = `
+          <span class="dot ${a.status}"></span>
+          <span class="agent-name">${a.name}</span>
+          <span class="tag">${a.tag}</span>`;
+        row.onclick = () => openInspector(row, a.name, dept.name, dept.key, a.tools);
+        body.appendChild(row);
+      });
+      section.appendChild(body);
+      deptsWrap.appendChild(section);
+    });
+
+    document.getElementById('statAgents').textContent = `${onlineAgents}/${totalAgents}`;
+    document.getElementById('statTasks').textContent = 120 + Math.floor(Math.random()*200);
+    document.getElementById('statDepts').textContent = p.depts.length;
+
+    closeInspector();
+    requestAnimationFrame(drawConnectors);
+  }
+
+  function switchProject(id){
+    if(id === currentProject) return;
+    currentProject = id;
+    renderTabs();
+    renderProject(id);
+  }
+
+  /* ---------------- inspector ---------------- */
+  function openInspector(el, name, deptLabel, deptKey, tools){
+    document.querySelectorAll('.agent-row.active').forEach(r=>r.classList.remove('active'));
+    el.classList.add('active');
+
+    document.getElementById('insp-name').textContent = name;
+    document.getElementById('insp-dept').textContent = deptLabel + ' CREW';
+    document.getElementById('insp-dept').style.setProperty('--dc', deptColors[deptKey]);
+    document.getElementById('insp-tasks').textContent = (10 + Math.floor(Math.random()*40));
+    document.getElementById('insp-uptime').textContent = (97 + Math.random()*3).toFixed(1) + '%';
+
+    const toolsWrap = document.getElementById('insp-tools');
+    toolsWrap.innerHTML = '';
+    tools.forEach(t=>{
+      const s = document.createElement('span');
+      s.className = 'tag';
+      s.textContent = t;
+      toolsWrap.appendChild(s);
+    });
+
+    const log = document.getElementById('insp-log');
+    const now = new Date();
+    const fmt = (m)=> new Date(now-m*60000).toLocaleTimeString('ja-JP',{hour12:false});
+    log.innerHTML = `
+      <div><span>${fmt(2)}</span>task completed</div>
+      <div><span>${fmt(14)}</span>synced with ${tools[0]}</div>
+      <div><span>${fmt(41)}</span>routed by Conductor</div>
+    `;
+
+    document.getElementById('inspector').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+  }
+  function closeInspector(){
+    document.getElementById('inspector').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+    document.querySelectorAll('.agent-row.active').forEach(r=>r.classList.remove('active'));
+  }
+
+  /* ---------------- connector lines: conductor -> each visible dept head ---------------- */
+  function drawConnectors(){
+    const svg = document.getElementById('connectors');
+    const stage = document.querySelector('.stage');
+    const stageBox = stage.getBoundingClientRect();
+    const from = document.getElementById('conductor').getBoundingClientRect();
+    const fx = from.left + from.width/2 - stageBox.left;
+    const fy = from.bottom - stageBox.top;
+
+    let html = '';
+    document.querySelectorAll('.dept').forEach(dept=>{
+      const head = dept.querySelector('.dept-head').getBoundingClientRect();
+      const tx = head.left + head.width/2 - stageBox.left;
+      const ty = head.top - stageBox.top;
+      const midY = fy + (ty - fy) * 0.5;
+      html += `<path class="flow" d="M ${fx} ${fy} C ${fx} ${midY}, ${tx} ${midY}, ${tx} ${ty}" />`;
+    });
+    svg.innerHTML = html;
+    svg.setAttribute('viewBox', `0 0 ${stageBox.width} ${stageBox.height}`);
+  }
+
+  window.addEventListener('resize', drawConnectors);
+  window.addEventListener('load', () => setTimeout(drawConnectors, 50));
+
+  /* ---------------- init ---------------- */
+  renderTabs();
+  renderProject(currentProject);
+  setTimeout(drawConnectors, 60);
+</script>
+</body>
+</html>
