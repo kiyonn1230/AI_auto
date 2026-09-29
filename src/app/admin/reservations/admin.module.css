@@ -1,0 +1,397 @@
+/* 旧 public/lp/reservations.html の見た目（LP と同じ配色）をそのまま移植したもの。
+   ルートの globals.css はダッシュボード用の暗い配色なので、ページ全体をこの中で塗り直している。 */
+
+.page {
+  --navy: #0f1b3d;
+  --ink: #1d2433;
+  --muted: #5b6477;
+  --line: #e3e7ef;
+  --bg-soft: #f5f7fb;
+  --accent: #2f6bff;
+  --accent-2: #19c2b0;
+  --warn: #f5a524;
+  --danger: #e5484d;
+  --grad: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
+
+  min-height: 100vh;
+  background: var(--bg-soft);
+  color: var(--ink);
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.page a {
+  color: var(--accent);
+}
+
+.container {
+  width: min(1440px, 100% - 32px);
+  margin: 0 auto;
+}
+
+/* ---------- header ---------- */
+.header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.page .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.logo small {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.logoMark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--grad);
+  color: #fff;
+  font-size: 16px;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btnPrimary {
+  background: var(--grad);
+  color: #fff;
+}
+
+.page .btnOutline {
+  background: #fff;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- layout ---------- */
+.main {
+  padding: 32px 0 64px;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.head h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- KPI ---------- */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+}
+
+.kpiLabel {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.kpiNum {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+/* ---------- toolbar ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.15);
+}
+
+.toolbar .input,
+.toolbar .select {
+  width: auto;
+  flex: 1 1 200px;
+}
+
+.count {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.count strong {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.countWarn {
+  margin-left: 6px;
+  color: #b7791f;
+}
+
+/* ---------- table ---------- */
+.tableWrap {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.list {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 1380px;
+}
+
+.list th,
+.list td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.list th {
+  background: #fafbfe;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+
+.list tr:hover td {
+  background: #fafcff;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.method {
+  min-width: 130px;
+}
+
+.sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.detail {
+  color: var(--muted);
+  margin-top: 4px;
+  max-width: 240px;
+  white-space: pre-wrap;
+}
+
+.list .cellSelect {
+  width: 120px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.list .memo {
+  display: block;
+  width: 180px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.list input.memo {
+  margin-bottom: 6px;
+}
+
+.list textarea.memo {
+  min-height: 36px;
+  resize: vertical;
+}
+
+.rowNotice {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.rowNoticeError {
+  color: var(--danger);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  margin: 0 4px 4px 0;
+  white-space: nowrap;
+}
+
+.status {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.statusNew { background: var(--accent); }
+.statusContacted { background: var(--warn); }
+.statusScheduled { background: var(--accent-2); }
+.statusDone { background: #8b95a7; }
+.statusCanceled { background: var(--danger); }
+
+.iconBtn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 16px;
+  padding: 4px;
+}
+
+.iconBtn:hover {
+  color: var(--danger);
+}
+
+.iconBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+
+.footnote {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 16px;
+}
+
+/* ---------- notice (未設定・エラー時) ---------- */
+.notice {
+  max-width: 640px;
+  margin: 12vh auto;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.notice h1 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.notice p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.notice code {
+  font-size: 13px;
+  background: var(--bg-soft);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.noticeCode {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--danger) !important;
+  word-break: break-word;
+}
+
+@media (max-width: 960px) {
+  .kpis {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

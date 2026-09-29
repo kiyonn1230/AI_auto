@@ -245,6 +245,9 @@ a { color: var(--accent); }
 .form__agree { font-size: 14px; display: flex; gap: 8px; align-items: center; }
 .form__agree label { display: inline; font-weight: 500; margin: 0; }
 .form__submit { width: 100%; margin-top: 8px; }
+.form__submit:disabled { opacity: .6; cursor: progress; transform: none; box-shadow: none; }
+/* ハニーポット。display:none だと無視するボットがいるので、画面外に置いて見えなくする */
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .form__error { color: var(--danger); font-size: 13px; margin-top: 6px; display: none; }
 .form__done { display: none; text-align: center; padding: 30px 10px; }
 .form__done .big { font-size: 56px; }
@@ -277,47 +280,12 @@ a { color: var(--accent); }
   html { scroll-behavior: auto; }
 }
 
-/* ===== Admin (reservation list) ===== */
-.admin { background: var(--bg-soft); min-height: 100vh; }
-.admin__main { padding: 32px 0 64px; }
-.admin .container { width: min(1440px, 100% - 32px); }
-.admin__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
-.admin__head h1 { margin: 0; font-size: 26px; }
-.admin__actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 20px; }
-.kpi { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid var(--line); }
-.kpi__label { font-size: 12px; color: var(--muted); }
-.kpi__num { font-size: 26px; font-weight: 900; line-height: 1.3; }
-.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-.toolbar .input, .toolbar .select { width: auto; flex: 1 1 200px; padding: 10px 12px; font-size: 14px; }
-.table-wrap { background: #fff; border-radius: 14px; border: 1px solid var(--line); overflow-x: auto; }
-table.list { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1380px; }
-table.list td.method { min-width: 130px; }
-table.list th, table.list td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-table.list th { background: #fafbfe; font-size: 12px; color: var(--muted); font-weight: 700; white-space: nowrap; position: sticky; top: 0; }
-table.list tr:hover td { background: #fafcff; }
-table.list td.nowrap { white-space: nowrap; }
-table.list .select { padding: 6px 8px; font-size: 13px; width: 120px; }
-table.list .memo { padding: 6px 8px; font-size: 13px; min-height: 36px; width: 180px; resize: vertical; }
-.tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--bg-soft); border: 1px solid var(--line); margin: 0 4px 4px 0; white-space: nowrap; }
-.status { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
-.status--new { background: var(--accent); }
-.status--contacted { background: var(--warn); }
-.status--scheduled { background: var(--accent-2); }
-.status--done { background: #8b95a7; }
-.status--canceled { background: var(--danger); }
-.empty { text-align: center; padding: 60px 20px; color: var(--muted); }
-.admin__notice { font-size: 12px; color: var(--muted); margin-top: 16px; }
-.icon-btn { background: none; border: 0; cursor: pointer; color: var(--muted); font-size: 16px; padding: 4px; }
-.icon-btn:hover { color: var(--danger); }
-
 /* ===== Responsive ===== */
 @media (max-width: 960px) {
   .hero__grid, .reserve { grid-template-columns: 1fr; }
   .reserve__info { position: static; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .steps { grid-template-columns: 1fr 1fr; }
-  .kpis { grid-template-columns: repeat(3, 1fr); }
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
@@ -331,6 +299,5 @@ table.list .memo { padding: 6px 8px; font-size: 13px; min-height: 36px; width: 1
   .form { padding: 24px; }
   .form__row--2 { grid-template-columns: 1fr; }
   .cta-band { padding: 40px 20px; }
-  .kpis { grid-template-columns: repeat(2, 1fr); }
   .footer__grid { grid-template-columns: 1fr; }
 }

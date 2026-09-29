@@ -294,21 +294,21 @@
             <div class="form__row form__row--2">
               <div>
                 <label for="company">会社名<span class="req">必須</span></label>
-                <input class="input" id="company" name="company" type="text" autocomplete="organization" placeholder="株式会社〇〇" required />
+                <input class="input" id="company" name="company" type="text" autocomplete="organization" placeholder="株式会社〇〇" maxlength="100" required />
               </div>
               <div>
                 <label for="name">お名前<span class="req">必須</span></label>
-                <input class="input" id="name" name="name" type="text" autocomplete="name" placeholder="山田 太郎" required />
+                <input class="input" id="name" name="name" type="text" autocomplete="name" placeholder="山田 太郎" maxlength="50" required />
               </div>
             </div>
             <div class="form__row form__row--2">
               <div>
                 <label for="email">メールアドレス<span class="req">必須</span></label>
-                <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+                <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required />
               </div>
               <div>
                 <label for="tel">電話番号<span class="opt">任意</span></label>
-                <input class="input" id="tel" name="tel" type="tel" autocomplete="tel" placeholder="03-1234-5678" />
+                <input class="input" id="tel" name="tel" type="tel" autocomplete="tel" placeholder="03-1234-5678" maxlength="20" />
               </div>
             </div>
             <div class="form__row form__row--2">
@@ -366,7 +366,12 @@
             </div>
             <div class="form__row">
               <label for="detail">自動化したい業務・現在の課題<span class="opt">任意</span></label>
-              <textarea class="textarea" id="detail" name="detail" placeholder="例）毎月200件ほどの請求書をExcelに手入力しており、2名で丸2日かかっています。"></textarea>
+              <textarea class="textarea" id="detail" name="detail" maxlength="2000" placeholder="例）毎月200件ほどの請求書をExcelに手入力しており、2名で丸2日かかっています。"></textarea>
+            </div>
+            <!-- ボット対策：人には見えない入力欄。埋まっていたら保存しない -->
+            <div class="hp" aria-hidden="true">
+              <label for="website">ウェブサイト（入力しないでください）</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
             </div>
             <div class="form__row form__agree">
               <input type="checkbox" id="agree" name="agree" required />
@@ -374,6 +379,7 @@
             </div>
             <div class="form__error" id="formError">未入力の必須項目があります</div>
             <button type="submit" class="btn btn--primary form__submit">この内容で予約する</button>
+            <div class="form__error" id="submitError" role="alert"></div>
           </form>
 
           <div class="form__done" id="formDone" role="status" aria-live="polite">
