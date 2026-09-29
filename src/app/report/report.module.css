@@ -1,0 +1,248 @@
+/* 教室の先生に見せる画面なので、ダッシュボード側のダークテーマは使わず
+   明るく読みやすい配色で独立させている。 */
+
+.page {
+  --ink: #23201d;
+  --ink-soft: #6b645d;
+  --line: #e2ddd6;
+  --paper: #ffffff;
+  --bg: #faf8f5;
+  --accent: #2f6f5e;
+  --accent-soft: #eaf2ef;
+  --warn: #a4562a;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family:
+    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  padding: 40px 20px 80px;
+}
+
+.inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 0 0 8px;
+}
+
+.lead {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.field {
+  margin-bottom: 24px;
+}
+
+.field:last-of-type {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.hint {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: #fff;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+.textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.row > .field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.toneGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.toneButton {
+  flex: 1;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.toneButton:hover {
+  border-color: var(--accent);
+}
+
+.toneButton[aria-pressed='true'] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 28px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.12s;
+}
+
+.submit:hover {
+  opacity: 0.9;
+}
+
+.submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.notice {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: #f4f1ec;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.error {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--warn);
+  background: #fbf0e8;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+/* ---------- 結果 ---------- */
+
+.result {
+  margin-top: 28px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.resultHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.resultTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.copyButton {
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.copyButton:hover {
+  background: var(--accent-soft);
+}
+
+.resultBody {
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 2;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  margin: 0;
+  font-family: inherit;
+}
+
+.resultFoot {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding: 24px 14px 60px;
+  }
+  .card,
+  .result {
+    padding: 20px;
+  }
+}
