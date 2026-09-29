@@ -272,6 +272,19 @@ a { color: var(--accent); }
 .footer a:hover { color: #fff; }
 .footer__bottom { border-top: 1px solid rgba(255,255,255,.12); padding-top: 20px; font-size: 12px; text-align: center; }
 
+/* ===== Privacy policy ===== */
+.policy { padding: 64px 0 96px; }
+.policy__inner { max-width: 760px; }
+.policy h2 { font-size: 20px; margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--line); }
+.policy p, .policy li { font-size: 15px; }
+.policy ul { padding-left: 1.3em; }
+/* 固定ヘッダーの下に見出しが隠れないようにする（#operator へのリンク用） */
+.policy [id] { scroll-margin-top: 88px; }
+.policy__table { display: grid; grid-template-columns: 11em 1fr; gap: 10px 20px; margin: 16px 0; padding: 20px 24px; background: var(--bg-soft); border-radius: var(--radius); }
+.policy__table dt { font-weight: 700; font-size: 14px; }
+.policy__table dd { margin: 0; font-size: 15px; min-width: 0; overflow-wrap: anywhere; }
+.policy__date { margin-top: 48px; color: var(--muted); font-size: 14px; text-align: right; }
+
 /* ===== Reveal animation ===== */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
@@ -298,6 +311,8 @@ a { color: var(--accent); }
   .stats, .grid-3, .grid-2, .steps { grid-template-columns: 1fr; }
   .form { padding: 24px; }
   .form__row--2 { grid-template-columns: 1fr; }
+  .policy__table { grid-template-columns: 1fr; gap: 2px; }
+  .policy__table dd + dt { margin-top: 12px; }
   .cta-band { padding: 40px 20px; }
   .footer__grid { grid-template-columns: 1fr; }
 }
