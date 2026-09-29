@@ -1,5 +1,5 @@
 /**
- * ツムギAI 予約フォーム → Googleスプレッドシート 受信スクリプト
+ * テマカル 予約フォーム → Googleスプレッドシート 受信スクリプト
  *
  * 使い方:
  *  1. Googleスプレッドシートを新規作成し「拡張機能 > Apps Script」を開く
@@ -12,7 +12,7 @@
  */
 
 var SHEET_NAME = "予約リスト";
-var NOTIFY_EMAIL = "hello@tsumugi-ai.example"; // 空文字にすると通知しない
+var NOTIFY_EMAIL = "hello@temakaru.example"; // 空文字にすると通知しない
 
 var HEADERS = [
   "予約ID", "受付日時", "会社名", "担当者名", "メールアドレス", "電話番号",
