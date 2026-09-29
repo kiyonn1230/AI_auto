@@ -12,7 +12,7 @@
  */
 
 var SHEET_NAME = "予約リスト";
-var NOTIFY_EMAIL = "hello@temakaru.example"; // 空文字にすると通知しない
+var NOTIFY_EMAIL = "temakaru48@gmail.com"; // 空文字にすると通知しない
 
 var HEADERS = [
   "予約ID", "受付日時", "会社名", "担当者名", "メールアドレス", "電話番号",

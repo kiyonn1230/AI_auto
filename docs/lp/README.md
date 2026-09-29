@@ -163,7 +163,7 @@ https://<ドメイン>/lp/index.html                        → 流入元「LP�
 ## 公開前にやること
 
 - [ ] 屋号「テマカル」の商標を J-PlatPat で確認し、ドメインを取得（`docs/lp/company-name.md`）
-- [ ] 仮のメールアドレス `hello@temakaru.example` を実際のものに差し替え（`public/lp/index.html` のフッターと、`public/lp/privacy.html` の3か所）
+- [x] 連絡先のメールアドレスを設定（`temakaru48@gmail.com`）。変える場合は `public/lp/index.html` のフッターと `public/lp/privacy.html` の3か所を直す
 - [ ] 料金・導入イメージの数値を実態に合わせて調整
 - [ ] プライバシーポリシー（`public/lp/privacy.html`）の内容が実際の運用と合っているか確認し、制定日を公開日に合わせる。
       外部サービスや保存先、アクセス解析ツールを追加・変更したら、このページも直す
