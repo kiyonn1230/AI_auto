@@ -5,6 +5,7 @@
 | ファイル | 内容 |
 | --- | --- |
 | `public/lp/index.html` | ランディングページ（LP）。無料相談の予約フォーム付き |
+| `public/lp/privacy.html` | プライバシーポリシー。予約フォームの同意欄とフッターからリンク |
 | `public/lp/assets/` | LP の CSS / JavaScript。`store.js` が予約を受付APIへ送信する |
 | `src/app/api/reservations/route.ts` | 予約の受付API。入力チェック・受付番号の発行・Supabaseへの保存 |
 | `src/app/admin/reservations/` | 予約リスト（管理画面）。Basic認証つき。検索・ステータス管理・CSV出力 |
@@ -36,6 +37,12 @@ Supabase（reservations テーブル）
 以前の版はブラウザの localStorage にだけ保存していたため、他の端末の予約は見えませんでした。
 
 ## セットアップ
+
+### 0. Supabase のプロジェクトを東京リージョンで作る
+
+新しくプロジェクトを作るときは、Region で **Northeast Asia (Tokyo)** を選んでください。
+プライバシーポリシー（`public/lp/privacy.html`）に「保存先のサーバーは日本（東京）」と書いているためです。
+リージョンは後から変えられないので、別の地域で作った場合は、ポリシーの記載のほうを直してください。
 
 ### 1. テーブルを作る（マイグレーション）
 
@@ -156,8 +163,9 @@ https://<ドメイン>/lp/index.html                        → 流入元「LP�
 ## 公開前にやること
 
 - [ ] 屋号「テマカル」の商標を J-PlatPat で確認し、ドメインを取得（`docs/lp/company-name.md`）
-- [ ] フッターのメールアドレス（今は仮の `hello@temakaru.example`）を実際のものに差し替え（`public/lp/index.html`）
+- [ ] 仮のメールアドレス `hello@temakaru.example` を実際のものに差し替え（`public/lp/index.html` のフッターと、`public/lp/privacy.html` の3か所）
 - [ ] 料金・導入イメージの数値を実態に合わせて調整
-- [ ] プライバシーポリシーページを作成し、フォームのリンク先を設定
+- [ ] プライバシーポリシー（`public/lp/privacy.html`）の内容が実際の運用と合っているか確認し、制定日を公開日に合わせる。
+      外部サービスや保存先、アクセス解析ツールを追加・変更したら、このページも直す
 - [ ] Supabase にマイグレーションを適用し、環境変数を設定（上の「セットアップ」）
 - [ ] 本番の URL で LP から予約を1件送り、管理画面に出ることを確認してから削除
