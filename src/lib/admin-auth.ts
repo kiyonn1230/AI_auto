@@ -1,7 +1,7 @@
 // 管理画面の Basic 認証。middleware（Edge ランタイム）とサーバー側の両方から使うので、
 // Node 専用 API（crypto.timingSafeEqual など）は使わずに書いている。
 
-export const ADMIN_REALM = 'Tsumugi AI Admin';
+export const ADMIN_REALM = 'Temakaru Admin';
 
 /** ADMIN_USER と ADMIN_PASSWORD の両方が入っているか。未設定なら管理画面は開けない（安全側に倒す）。 */
 export function adminAuthConfigured(): boolean {

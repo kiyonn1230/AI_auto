@@ -1,6 +1,6 @@
-# ツムギAI — AI業務自動化サービス 立ち上げキット
+# テマカル — AI業務自動化サービス 立ち上げキット
 
-中小企業向け AI業務自動化サービス「**ツムギAI**」のLP・予約管理・社名案です。
+中小企業向け AI業務自動化サービス「**テマカル**」のLP・予約管理・屋号の検討メモです。
 
 | ファイル | 内容 |
 | --- | --- |
@@ -10,7 +10,7 @@
 | `src/app/admin/reservations/` | 予約リスト（管理画面）。Basic認証つき。検索・ステータス管理・CSV出力 |
 | `src/middleware.ts` | 管理画面（`/admin` 配下）の Basic 認証 |
 | `supabase/migrations/20260929000000_reservations.sql` | `reservations` テーブル・RLS・権限 |
-| `docs/lp/company-name.md` | 社名案・タグライン・登記前チェックリスト |
+| `docs/lp/company-name.md` | 屋号「テマカル」に決めた理由・見送った候補・使い始める前のチェックリスト |
 | `docs/lp/reservation-list-template.csv` | Excel / スプレッドシート用の予約リスト雛形 |
 | `docs/lp/google-apps-script.gs` | 旧構成（スプレッドシート連携）のスクリプト。**現在は使っていません** |
 
@@ -155,8 +155,8 @@ https://<ドメイン>/lp/index.html                        → 流入元「LP�
 
 ## 公開前にやること
 
-- [ ] 社名を決定し、商標・商号・ドメインを確認（`docs/lp/company-name.md`）
-- [ ] フッターの住所・メールアドレスを差し替え（`public/lp/index.html`）
+- [ ] 屋号「テマカル」の商標を J-PlatPat で確認し、ドメインを取得（`docs/lp/company-name.md`）
+- [ ] フッターのメールアドレス（今は仮の `hello@temakaru.example`）を実際のものに差し替え（`public/lp/index.html`）
 - [ ] 料金・導入イメージの数値を実態に合わせて調整
 - [ ] プライバシーポリシーページを作成し、フォームのリンク先を設定
 - [ ] Supabase にマイグレーションを適用し、環境変数を設定（上の「セットアップ」）

@@ -9,7 +9,7 @@ import styles from './admin.module.css';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: '予約リスト｜ツムギAI 管理画面',
+  title: '予約リスト｜テマカル 管理画面',
   robots: { index: false, follow: false },
 };
 

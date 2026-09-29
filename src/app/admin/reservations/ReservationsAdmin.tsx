@@ -200,7 +200,7 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
       <header className={styles.header}>
         <div className={`${styles.container} ${styles.headerInner}`}>
           <a href="/lp/index.html" className={styles.logo}>
-            <span className={styles.logoMark}>紡</span>ツムギAI <small>管理画面</small>
+            <span className={styles.logoMark}>テ</span>テマカル <small>管理画面</small>
           </a>
           <a href="/lp/index.html" className={`${styles.btn} ${styles.btnOutline}`}>
             LPを表示
