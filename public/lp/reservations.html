@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>予約リスト｜ツムギAI 管理画面</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="admin">
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo"><span class="logo__mark">紡</span>ツムギAI <small style="font-weight:500;font-size:13px;color:var(--muted)">管理画面</small></a>
+      <a href="index.html" class="btn btn--outline btn--sm">LPを表示</a>
+    </div>
+  </header>
+
+  <main class="admin__main">
+    <div class="container">
+      <div class="admin__head">
+        <h1>📋 無料相談 予約リスト</h1>
+        <div class="admin__actions">
+          <button class="btn btn--primary btn--sm" id="exportBtn">CSVダウンロード</button>
+          <button class="btn btn--outline btn--sm" id="sampleBtn">サンプルデータ追加</button>
+          <button class="btn btn--danger btn--sm" id="clearBtn">全件削除</button>
+        </div>
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="toolbar">
+        <input class="input" id="q" type="search" placeholder="会社名・氏名・メール・内容で検索" />
+        <select class="select" id="statusFilter">
+          <option value="">すべてのステータス</option>
+        </select>
+        <select class="select" id="sort">
+          <option value="date1">希望日時が近い順</option>
+          <option value="createdDesc">受付日時が新しい順</option>
+          <option value="createdAsc">受付日時が古い順</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="list">
+          <thead>
+            <tr>
+              <th>予約ID</th>
+              <th>受付日時</th>
+              <th>会社名 / 担当者</th>
+              <th>連絡先</th>
+              <th>規模 / プラン</th>
+              <th>相談内容</th>
+              <th>希望日時</th>
+              <th>相談方法</th>
+              <th>ステータス</th>
+              <th>担当 / 社内メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="empty" id="empty" hidden>
+          まだ予約はありません。<br />LPの予約フォームから送信するか、「サンプルデータ追加」でお試しください。
+        </div>
+      </div>
+
+      <p class="admin__notice">
+        ※ このページはブラウザ内（localStorage）に保存されたデータを表示しています。別の端末・ブラウザの予約は表示されません。
+        本番運用では <code>public/lp/assets/js/store.js</code> の <code>endpoint</code> にGoogleスプレッドシート等の受信先を設定してください（詳細はリポジトリの docs/lp/README.md）。
+      </p>
+    </div>
+  </main>
+
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
