@@ -61,7 +61,7 @@ export function parseReservationInput(body: unknown, now = Date.now()): ParseRes
 
   const company = str(input.company);
   if (!company || company.length > LIMITS.company) {
-    return { ok: false, message: `会社名を入力してください（${LIMITS.company}文字以内）` };
+    return { ok: false, message: `会社名・教室名を入力してください（${LIMITS.company}文字以内）` };
   }
 
   const name = str(input.name);

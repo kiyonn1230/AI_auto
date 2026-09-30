@@ -11,6 +11,7 @@
 | `src/app/admin/reservations/` | 予約リスト（管理画面）。Basic認証つき。検索・ステータス管理・CSV出力 |
 | `src/middleware.ts` | 管理画面（`/admin` 配下）の Basic 認証 |
 | `supabase/migrations/20260929000000_reservations.sql` | `reservations` テーブル・RLS・権限 |
+| `supabase/migrations/20260930000000_reservation_plans.sql` | 料金プランの選択肢を「ツール / 個別開発」に変更 |
 | `docs/lp/company-name.md` | 屋号「テマカル」に決めた理由・見送った候補・使い始める前のチェックリスト |
 | `docs/lp/reservation-list-template.csv` | Excel / スプレッドシート用の予約リスト雛形 |
 | `docs/lp/google-apps-script.gs` | 旧構成（スプレッドシート連携）のスクリプト。**現在は使っていません** |
@@ -61,6 +62,7 @@ supabase db push                                   # 未適用のマイグレー
 1. Supabase のダッシュボード → SQL Editor を開く
 2. まだなら `supabase/migrations/20260814000000_init.sql` の中身を貼り付けて実行
 3. `supabase/migrations/20260929000000_reservations.sql` の中身を貼り付けて実行
+4. `supabase/migrations/20260930000000_reservation_plans.sql` の中身を貼り付けて実行（料金プランの選択肢を「ツール / 個別開発」にする）
 
 何度流しても同じ状態になるように書いてあるので、うっかり2回実行しても壊れません。
 
@@ -164,7 +166,9 @@ https://<ドメイン>/lp/index.html                        → 流入元「LP�
 
 - [ ] 屋号「テマカル」の商標を J-PlatPat で確認し、ドメインを取得（`docs/lp/company-name.md`）
 - [x] 連絡先のメールアドレスを設定（`temakaru48@gmail.com`）。変える場合は `public/lp/index.html` のフッターと `public/lp/privacy.html` の3か所を直す
-- [ ] 料金・導入イメージの数値を実態に合わせて調整
+- [x] 料金プランを「ツール（月¥5,000〜）」「個別開発（月¥30,000〜）」の2段＋初期設定代行（¥10,000）に整理。
+      プランを変えるときは、LP の料金欄・フォームの選択肢、`src/lib/reservations.ts` の `PLANS`、DB の check 制約（新しいマイグレーション）をそろえる
+- [ ] 導入イメージ（事例）とヒーローの説明文が、まだ会社向けの個別開発寄り。教室向けのツールの見せ方を検討
 - [ ] プライバシーポリシー（`public/lp/privacy.html`）の内容が実際の運用と合っているか確認し、制定日を公開日に合わせる。
       外部サービスや保存先、アクセス解析ツールを追加・変更したら、このページも直す
 - [ ] Supabase にマイグレーションを適用し、環境変数を設定（上の「セットアップ」）

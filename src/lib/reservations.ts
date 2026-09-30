@@ -4,7 +4,7 @@
 
 export const COMPANY_SIZES = ['1〜10名', '11〜50名', '51〜100名', '101〜300名', '301名以上'] as const;
 
-export const PLANS = ['', 'ライト', 'スタンダード', 'エンタープライズ'] as const;
+export const PLANS = ['', 'ツール', '個別開発'] as const;
 
 export const TOPICS = [
   '問い合わせ対応',

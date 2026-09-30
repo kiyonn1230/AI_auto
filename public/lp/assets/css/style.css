@@ -202,6 +202,12 @@ a { color: var(--accent); }
 .price li { padding: 8px 0 8px 26px; position: relative; font-size: 14px; border-bottom: 1px solid var(--line); }
 .price li::before { content: "✓"; position: absolute; left: 0; color: var(--accent-2); font-weight: 900; }
 .price-note { font-size: 13px; color: var(--muted); margin-top: 20px; text-align: center; }
+.price-grid { max-width: 820px; margin: 0 auto; }
+.price-option { max-width: 820px; margin: 24px auto 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 24px; border: 1px dashed var(--line); border-radius: 16px; background: #fff; }
+.price-option__name { font-weight: 700; }
+.price-option p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+.price-option__amount { font-size: 22px; font-weight: 900; white-space: nowrap; }
+.price-option__amount small { font-size: 12px; font-weight: 500; color: var(--muted); }
 
 /* ===== FAQ ===== */
 .faq { max-width: 820px; margin-inline: auto; }
@@ -311,6 +317,7 @@ a { color: var(--accent); }
   .stats, .grid-3, .grid-2, .steps { grid-template-columns: 1fr; }
   .form { padding: 24px; }
   .form__row--2 { grid-template-columns: 1fr; }
+  .price-option { flex-direction: column; align-items: flex-start; }
   .policy__table { grid-template-columns: 1fr; gap: 2px; }
   .policy__table dd + dt { margin-top: 12px; }
   .cta-band { padding: 40px 20px; }
