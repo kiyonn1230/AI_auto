@@ -132,6 +132,8 @@
       agree: form.agree.checked,
       source: sourceFromUrl(),
       website: fd.get("website") || "",
+      // どのページのフォームか（index / juku / koumuten）。選択肢の検証に使う
+      lp: fd.get("lp") || "general",
     };
 
     setSending(true);

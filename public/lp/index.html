@@ -21,6 +21,7 @@
       <a href="#top" class="logo"><span class="logo__mark">テ</span>テマカル</a>
       <button class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">☰</button>
       <nav class="nav" id="nav">
+        <a href="#industry">業種別</a>
         <a href="#service">サービス</a>
         <a href="#flow">導入の流れ</a>
         <a href="#case">導入イメージ</a>
@@ -81,10 +82,37 @@
     <div class="container">
       <div class="stats">
         <div class="stat reveal"><div class="stat__num grad-text">最短2週間</div><div class="stat__label">ヒアリングから運用開始まで</div></div>
-        <div class="stat reveal"><div class="stat__num grad-text">月5,000円〜</div><div class="stat__label">用意してあるツールなら初期費用0円</div></div>
+        <div class="stat reveal"><div class="stat__num grad-text">月3,000円〜</div><div class="stat__label">学習塾・教室向けツール（初期費用0円）</div></div>
         <div class="stat reveal"><div class="stat__num grad-text">0円</div><div class="stat__label">初回相談・業務診断</div></div>
       </div>
     </div>
+
+    <!-- ===== Industries ===== -->
+    <section class="section section--soft" id="industry">
+      <div class="container">
+        <div class="center">
+          <span class="section__eyebrow">Industries</span>
+          <h2 class="section__title">業種別のサービス</h2>
+          <p class="section__lead">よくある「手が回らない仕事」を、業種ごとにすぐ使える形にしています。</p>
+        </div>
+        <div class="grid-2">
+          <a class="card card--link reveal" href="juku.html">
+            <div class="card__icon">📚</div>
+            <h3>学習塾・習い事教室向け</h3>
+            <p>メモを3つ書くだけで、保護者にそのまま送れる月次レポートをAIが作成します。</p>
+            <div class="price__amount">¥3,000<small> / 月〜（税別）</small></div>
+            <span class="card__more">詳しく見る →</span>
+          </a>
+          <a class="card card--link reveal" href="koumuten.html">
+            <div class="card__icon">🏠</div>
+            <h3>工務店・リフォーム会社向け</h3>
+            <p>現場写真とメモから、施工事例とInstagramの投稿文を作成。問い合わせへの返信の下書きも。</p>
+            <div class="price__amount">¥30,000<small> / 月〜（税別）</small></div>
+            <span class="card__more">詳しく見る →</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- ===== Problems ===== -->
     <section class="section">
@@ -206,23 +234,32 @@
         <div class="center">
           <span class="section__eyebrow">Price</span>
           <h2 class="section__title">料金プラン</h2>
-          <p class="section__lead">用意してあるツールをすぐ使うか、業務に合わせて作るか。2つのプランから選べます。</p>
+          <p class="section__lead">業種別のサービスはすぐに始められる定額制。ほかの業務は、御社に合わせて個別に作ります。</p>
         </div>
-        <div class="grid-2 price-grid">
-          <div class="card price price--featured reveal">
-            <span class="price__ribbon">まずはここから</span>
-            <div class="price__name">ツール</div>
-            <div class="price__target">用意してあるAIツールを、登録してすぐ使いたい方</div>
-            <div class="price__amount">¥5,000<small> / 月〜（税別）</small></div>
+        <div class="grid-3">
+          <div class="card price reveal">
+            <div class="price__name">学習塾・習い事教室向け</div>
+            <div class="price__target">保護者レポート作成ツール</div>
+            <div class="price__amount">¥3,000<small> / 月〜（税別）</small></div>
             <div class="price__init">初期費用 0円</div>
             <ul>
-              <li>提供中：保護者レポート作成（学習塾・習い事教室向け）</li>
-              <li>ほかの業種向けのツールも順次追加</li>
+              <li>生徒数に応じた3プラン</li>
               <li>AIの利用料込み</li>
-              <li>メールサポート</li>
               <li>1か月単位で、いつでも解約可能</li>
             </ul>
-            <a href="#reserve" class="btn btn--primary" data-plan="ツール">申し込み・相談する</a>
+            <a href="juku.html#price" class="btn btn--outline">料金を詳しく見る</a>
+          </div>
+          <div class="card price reveal">
+            <div class="price__name">工務店・リフォーム会社向け</div>
+            <div class="price__target">施工事例・SNS・問い合わせ対応</div>
+            <div class="price__amount">¥30,000<small> / 月〜（税別）</small></div>
+            <div class="price__init">初期費用 ¥50,000〜</div>
+            <ul>
+              <li>2つのパッケージとセットプラン</li>
+              <li>御社の文体に合わせた設定</li>
+              <li>AIの利用料込み</li>
+            </ul>
+            <a href="koumuten.html#price" class="btn btn--outline">料金を詳しく見る</a>
           </div>
           <div class="card price reveal">
             <div class="price__name">個別開発</div>
@@ -234,17 +271,9 @@
               <li>生成AI（ChatGPT / Claude 等）との連携</li>
               <li>今お使いのツールとの連携</li>
               <li>月1回の運用レポートと改善</li>
-              <li>チャットサポート</li>
             </ul>
-            <a href="#reserve" class="btn btn--outline" data-plan="個別開発">相談する</a>
+            <a href="#reserve" class="btn btn--primary" data-plan="個別開発">相談する</a>
           </div>
-        </div>
-        <div class="price-option reveal">
-          <div>
-            <div class="price-option__name">オプション：初期設定代行</div>
-            <p>ツールの設定をこちらで行い、使える状態にしてお渡しします。「設定は苦手」という方に。</p>
-          </div>
-          <div class="price-option__amount">¥10,000<small>（1回・税別）</small></div>
         </div>
         <p class="price-note">※ 個別開発では、AIツールのAPI利用料は実費となります。</p>
       </div>
@@ -262,7 +291,7 @@
           <details><summary>社内の情報をAIに渡しても安全ですか？</summary><p>学習に利用されない法人向けプランやAPIを使用し、アクセス権限・ログ管理を含めて設計します。情報の取り扱いについては秘密保持契約（NDA）を締結したうえでご相談いただけます。</p></details>
           <details><summary>どのくらいで効果が出ますか？</summary><p>1業務の自動化であれば、最短2週間程度で運用を開始できます。PoC（試験導入）で効果を確認してから本格導入に進むため、無駄な投資を避けられます。</p></details>
           <details><summary>今使っているツールはそのまま使えますか？</summary><p>はい。Google Workspace、Microsoft 365、kintone、Slack、Chatwork、freee など、既存のツールを活かしたまま自動化するのが基本方針です。</p></details>
-          <details><summary>契約期間の縛りはありますか？</summary><p>ツールプランは1か月単位のご契約で、いつでも解約できます。個別開発は最低3か月からのご契約で、以降は1か月単位で解約可能です。</p></details>
+          <details><summary>契約期間の縛りはありますか？</summary><p>学習塾・教室向けのツールは1か月単位のご契約で、いつでも解約できます。工務店・リフォーム会社向けのパッケージと個別開発は最低3か月からのご契約で、以降は1か月単位で解約可能です。</p></details>
           <details><summary>地方の会社でも依頼できますか？</summary><p>はい。打ち合わせはオンラインを基本としているため、全国どこからでもご依頼いただけます。</p></details>
         </div>
       </div>
@@ -285,6 +314,7 @@
 
         <div class="form">
           <form id="reserveForm" novalidate>
+            <input type="hidden" name="lp" value="general" />
             <div class="form__row form__row--2">
               <div>
                 <label for="company">会社名・教室名<span class="req">必須</span></label>
@@ -321,7 +351,7 @@
                 <label for="plan">ご興味のあるプラン<span class="opt">任意</span></label>
                 <select class="select" id="plan" name="plan">
                   <option value="">未定・相談して決めたい</option>
-                  <option>ツール</option>
+                  <option>業種別パッケージ</option>
                   <option>個別開発</option>
                 </select>
               </div>
@@ -409,6 +439,8 @@
         <div>
           <h4>サービス</h4>
           <ul>
+            <li><a href="juku.html">学習塾・習い事教室向け</a></li>
+            <li><a href="koumuten.html">工務店・リフォーム会社向け</a></li>
             <li><a href="#service">サービス内容</a></li>
             <li><a href="#flow">導入の流れ</a></li>
             <li><a href="#price">料金プラン</a></li>

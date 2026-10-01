@@ -6,7 +6,9 @@
 | --- | --- | --- |
 | `/` | AGENT DECK — 各サービスの稼働状況を見るダッシュボード | 表示のみ（実行部は未実装） |
 | `/report` | 保護者レポート作成 — 学習塾・習い事教室向けMVP | 動く。Claude API を叩く |
-| `/lp/index.html` | テマカルの LP。無料相談の予約フォーム付き | 動く。予約は Supabase に保存 |
+| `/lp/index.html` | テマカルの総合 LP。無料相談の予約フォーム付き | 動く。予約は Supabase に保存 |
+| `/lp/juku.html` | 学習塾・習い事教室向け LP | 動く。予約は Supabase に保存 |
+| `/lp/koumuten.html` | 工務店・リフォーム会社向け LP | 動く。予約は Supabase に保存 |
 | `/admin/reservations` | 予約リスト（管理画面）。Basic 認証つき | 動く。手順は `docs/lp/README.md` |
 
 ---

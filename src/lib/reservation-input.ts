@@ -1,4 +1,4 @@
-import { COMPANY_SIZES, LIMITS, METHODS, PLANS, TOPICS } from '@/lib/reservations';
+import { LIMITS, LP_FORMS, METHODS, isLpKey, type LpKey } from '@/lib/reservations';
 
 /** 画面には出さない入力欄。人は空のまま送り、フォームを総なめするボットは埋めてくる。 */
 export const HONEYPOT_FIELD = 'website';
@@ -23,6 +23,7 @@ export type ReservationInsert = {
   method: string;
   detail: string;
   source: string;
+  lp: LpKey;
 };
 
 export type ParseResult = { ok: true; value: ReservationInsert } | { ok: false; message: string };
@@ -59,6 +60,15 @@ export function parseReservationInput(body: unknown, now = Date.now()): ParseRes
   }
   const input = body as Record<string, unknown>;
 
+  // どの LP のフォームか。古い LP の JavaScript がキャッシュに残っていても受け付けられるよう、
+  // 指定がなければ総合 LP として扱う
+  const rawLp = str(input.lp);
+  const lp: LpKey | null = rawLp === '' ? 'general' : isLpKey(rawLp) ? rawLp : null;
+  if (!lp) {
+    return { ok: false, message: '送信元のページが正しくありません' };
+  }
+  const options = LP_FORMS[lp];
+
   const company = str(input.company);
   if (!company || company.length > LIMITS.company) {
     return { ok: false, message: `会社名・教室名を入力してください（${LIMITS.company}文字以内）` };
@@ -81,12 +91,12 @@ export function parseReservationInput(body: unknown, now = Date.now()): ParseRes
   }
 
   const companySize = str(input.size);
-  if (!oneOf(COMPANY_SIZES, companySize)) {
-    return { ok: false, message: '従業員規模を選択してください' };
+  if (!oneOf(options.sizes, companySize)) {
+    return { ok: false, message: `${options.sizeLabel}を選択してください` };
   }
 
   const plan = str(input.plan);
-  if (!oneOf(PLANS, plan)) {
+  if (!oneOf(options.plans, plan)) {
     return { ok: false, message: 'プランの指定が正しくありません' };
   }
 
@@ -95,7 +105,7 @@ export function parseReservationInput(body: unknown, now = Date.now()): ParseRes
   if (topics.length === 0) {
     return { ok: false, message: 'ご相談内容を1つ以上選択してください' };
   }
-  if (!topics.every((topic) => oneOf(TOPICS, topic))) {
+  if (!topics.every((topic) => oneOf(options.topics, topic))) {
     return { ok: false, message: 'ご相談内容の指定が正しくありません' };
   }
 
@@ -117,7 +127,7 @@ export function parseReservationInput(body: unknown, now = Date.now()): ParseRes
 
   const detail = str(input.detail);
   if (detail.length > LIMITS.detail) {
-    return { ok: false, message: `自動化したい業務は${LIMITS.detail}文字以内で入力してください` };
+    return { ok: false, message: `ご相談の詳細は${LIMITS.detail}文字以内で入力してください` };
   }
 
   if (input.agree !== true) {
@@ -143,6 +153,7 @@ export function parseReservationInput(body: unknown, now = Date.now()): ParseRes
       method,
       detail,
       source,
+      lp,
     },
   };
 }

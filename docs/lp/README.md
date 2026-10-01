@@ -1,10 +1,13 @@
 # テマカル — AI業務自動化サービス 立ち上げキット
 
-中小企業向け AI業務自動化サービス「**テマカル**」のLP・予約管理・屋号の検討メモです。
+AI業務自動化サービス「**テマカル**」のLP・予約管理・屋号の検討メモです。
+今は **学習塾・習い事教室** と **工務店・リフォーム会社** の2業種に絞って売り込み、総合LPはその入口にしています。
 
 | ファイル | 内容 |
 | --- | --- |
-| `public/lp/index.html` | ランディングページ（LP）。無料相談の予約フォーム付き |
+| `public/lp/index.html` | 総合LP。業種別LPへの入口と、個別開発の相談窓口 |
+| `public/lp/juku.html` | 学習塾・習い事教室向けLP（保護者レポート作成ツール。月¥3,000〜） |
+| `public/lp/koumuten.html` | 工務店・リフォーム会社向けLP（施工事例・SNS・問い合わせ対応。月¥30,000〜） |
 | `public/lp/privacy.html` | プライバシーポリシー。予約フォームの同意欄とフッターからリンク |
 | `public/lp/assets/` | LP の CSS / JavaScript。`store.js` が予約を受付APIへ送信する |
 | `src/app/api/reservations/route.ts` | 予約の受付API。入力チェック・受付番号の発行・Supabaseへの保存 |
@@ -12,6 +15,7 @@
 | `src/middleware.ts` | 管理画面（`/admin` 配下）の Basic 認証 |
 | `supabase/migrations/20260929000000_reservations.sql` | `reservations` テーブル・RLS・権限 |
 | `supabase/migrations/20260930000000_reservation_plans.sql` | 料金プランの選択肢を「ツール / 個別開発」に変更 |
+| `supabase/migrations/20261001000000_reservation_lp.sql` | どのLPからの予約かを記録する `lp` 列と、LPごとの選択肢 |
 | `docs/lp/company-name.md` | 屋号「テマカル」に決めた理由・見送った候補・使い始める前のチェックリスト |
 | `docs/lp/reservation-list-template.csv` | Excel / スプレッドシート用の予約リスト雛形 |
 | `docs/lp/google-apps-script.gs` | 旧構成（スプレッドシート連携）のスクリプト。**現在は使っていません** |
@@ -63,6 +67,7 @@ supabase db push                                   # 未適用のマイグレー
 2. まだなら `supabase/migrations/20260814000000_init.sql` の中身を貼り付けて実行
 3. `supabase/migrations/20260929000000_reservations.sql` の中身を貼り付けて実行
 4. `supabase/migrations/20260930000000_reservation_plans.sql` の中身を貼り付けて実行（料金プランの選択肢を「ツール / 個別開発」にする）
+5. `supabase/migrations/20261001000000_reservation_lp.sql` の中身を貼り付けて実行（業種別LPの選択肢を追加する）
 
 何度流しても同じ状態になるように書いてあるので、うっかり2回実行しても壊れません。
 
@@ -88,7 +93,9 @@ supabase db push                                   # 未適用のマイグレー
 ```bash
 npm install
 npm run dev
-# → http://localhost:3000/lp/index.html          （LP）
+# → http://localhost:3000/lp/index.html          （総合LP）
+# → http://localhost:3000/lp/juku.html           （学習塾・教室向けLP）
+# → http://localhost:3000/lp/koumuten.html       （工務店・リフォーム向けLP）
 # → http://localhost:3000/admin/reservations     （予約リスト。ID・パスワードを聞かれます）
 ```
 
@@ -100,10 +107,29 @@ Next.js の `public/` はディレクトリの `index.html` を自動で返さ�
 2. 管理画面を開き、その受付番号の予約が一覧に出ることを確認
 3. 別の端末（スマートフォンなど）からも管理画面を開き、同じ一覧が見えることを確認
 
+## LPごとのフォームの違い
+
+予約はすべて同じ `reservations` テーブルに入り、`lp` 列でどのLPから来たかを区別します。
+
+| | 総合（`general`） | 学習塾・教室（`juku`） | 工務店・リフォーム（`koumuten`） |
+| --- | --- | --- | --- |
+| 規模（`company_size`） | 従業員規模 | **生徒数** | 従業員規模 |
+| プラン | 業種別パッケージ / 個別開発 | スモール / スタンダード / ラージ | 事例・SNSパック / 問い合わせ対応パック / セットプラン |
+| 相談内容 | 問い合わせ対応、書類処理 など7つ | 保護者レポート、面談の記録 など5つ | 施工事例・SNS投稿、工事報告書 など5つ |
+
+選択肢を変えるときは、次の3か所を一字一句そろえてください（「〜」は U+301C）。
+
+1. 各LPのフォーム（`public/lp/*.html`）
+2. `src/lib/reservations.ts` の `LP_FORMS`（受付APIの検証に使う）
+3. DB の check 制約（新しいマイグレーションを追加する）
+
+業種を増やすときは、LPのHTMLをコピーして `<input type="hidden" name="lp" value="...">` を新しい値にし、
+`LP_FORMS` とマイグレーションに同じ値を足します。
+
 ## 管理画面でできること
 
 - 予約の一覧表示（新しい順に最大1000件を読み込み）
-- 受付番号・会社名・氏名・メール・内容での検索、ステータスでの絞り込み、並び替え
+- 受付番号・会社名・氏名・メール・内容での検索、ステータス・LPでの絞り込み、並び替え
 - ステータス（新規 / 連絡済 / 日程確定 / 面談完了 / キャンセル）・担当・社内メモの変更（変更するとすぐ保存）
 - 予約の削除（確認ダイアログあり。元に戻せません）
 - 表示中の予約の CSV 出力（Excel で文字化けしない BOM 付き UTF-8）
@@ -117,6 +143,7 @@ LP の URL に `utm_source` を付けておくと、どこから来た予約か�
 
 ```
 https://<ドメイン>/lp/index.html?utm_source=instagram   → 流入元「LP:instagram」
+https://<ドメイン>/lp/juku.html?utm_source=flyer        → 流入元「LP:flyer」（LP列は「学習塾・教室」）
 https://<ドメイン>/lp/index.html                        → 流入元「LP」
 ```
 
@@ -166,9 +193,13 @@ https://<ドメイン>/lp/index.html                        → 流入元「LP�
 
 - [ ] 屋号「テマカル」の商標を J-PlatPat で確認し、ドメインを取得（`docs/lp/company-name.md`）
 - [x] 連絡先のメールアドレスを設定（`temakaru48@gmail.com`）。変える場合は `public/lp/index.html` のフッターと `public/lp/privacy.html` の3か所を直す
-- [x] 料金プランを「ツール（月¥5,000〜）」「個別開発（月¥30,000〜）」の2段＋初期設定代行（¥10,000）に整理。
-      プランを変えるときは、LP の料金欄・フォームの選択肢、`src/lib/reservations.ts` の `PLANS`、DB の check 制約（新しいマイグレーション）をそろえる
-- [ ] 導入イメージ（事例）とヒーローの説明文が、まだ会社向けの個別開発寄り。教室向けのツールの見せ方を検討
+- [x] 料金を業種別に整理（学習塾・教室：月¥3,000〜、工務店・リフォーム：月¥30,000〜、個別開発：月¥30,000〜）。
+      金額はすべて仮の数字。最初の数件の反応を見て調整する
+- [ ] 学習塾・教室向けツールを、契約した教室ごとに使えるようにする（ログイン・教室ごとの利用制限・請求）。
+      今の `/report` は誰でも開けて、使うたびに Claude API の料金がかかるので、**LPからリンクしない**こと
+- [ ] 工務店・リフォーム向けの「LINEやメールで写真とメモを送る」仕組みは、契約ごとに設定する前提。最初の1社の前に作り方を決める
+- [ ] 相談方法の「訪問（首都圏）」を、実際に訪問できる地域に合わせる（`reservations.ts` の `METHODS` と DB の check 制約も）
+- [ ] 総合LPの「導入イメージ」（不動産・製造業・士業）は想定の例。実績ができたら差し替える
 - [ ] プライバシーポリシー（`public/lp/privacy.html`）の内容が実際の運用と合っているか確認し、制定日を公開日に合わせる。
       外部サービスや保存先、アクセス解析ツールを追加・変更したら、このページも直す
 - [ ] Supabase にマイグレーションを適用し、環境変数を設定（上の「セットアップ」）

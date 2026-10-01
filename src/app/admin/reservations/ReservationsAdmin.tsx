@@ -4,9 +4,14 @@ import { useEffect, useMemo, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   LIMITS,
+  LP_FORMS,
+  LP_KEYS,
   STATUSES,
   formatDateTime,
+  lpLabel,
+  sizeLabel,
   statusLabel,
+  type LpKey,
   type Reservation,
   type ReservationStatus,
 } from '@/lib/reservations';
@@ -38,11 +43,13 @@ function filterAndSort(
   rows: Reservation[],
   query: string,
   status: '' | ReservationStatus,
+  lp: '' | LpKey,
   sort: SortKey,
 ): Reservation[] {
   const needle = query.trim().toLowerCase();
   const result = rows.filter((row) => {
     if (status && row.status !== status) return false;
+    if (lp && row.lp !== lp) return false;
     if (!needle) return true;
     const haystack = [
       row.reception_no,
@@ -81,8 +88,8 @@ function csvCell(value: unknown): string {
 
 function downloadCsv(rows: Reservation[]) {
   const header = [
-    '予約ID', '受付日時', '会社名', '担当者名', 'メールアドレス', '電話番号', '従業員規模',
-    '希望プラン', '相談カテゴリ', '第1希望日時', '第2希望日時', '相談方法', '自動化したい業務',
+    '予約ID', '受付日時', 'LP', '会社名・教室名', '担当者名', 'メールアドレス', '電話番号', '規模',
+    '希望プラン', '相談カテゴリ', '第1希望日時', '第2希望日時', '相談方法', 'ご相談の詳細',
     'ステータス', '担当', '社内メモ', '流入元',
   ];
   const lines = [header.map(csvCell).join(',')].concat(
@@ -90,11 +97,12 @@ function downloadCsv(rows: Reservation[]) {
       [
         row.reception_no,
         formatDateTime(row.created_at),
+        lpLabel(row.lp),
         row.company,
         row.name,
         row.email,
         row.tel,
-        row.company_size,
+        `${sizeLabel(row.lp)} ${row.company_size}`,
         row.plan,
         row.topics.join(' / '),
         formatDateTime(row.preferred_at_1),
@@ -125,6 +133,7 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
   const [rows, setRows] = useState(initialReservations);
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'' | ReservationStatus>('');
+  const [lpFilter, setLpFilter] = useState<'' | LpKey>('');
   const [sort, setSort] = useState<SortKey>('date1');
   const [notices, setNotices] = useState<Record<string, RowNotice>>({});
   const [refreshing, startRefresh] = useTransition();
@@ -141,8 +150,8 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
   }, [rows]);
 
   const visible = useMemo(
-    () => filterAndSort(rows, query, statusFilter, sort),
-    [rows, query, statusFilter, sort],
+    () => filterAndSort(rows, query, statusFilter, lpFilter, sort),
+    [rows, query, statusFilter, lpFilter, sort],
   );
 
   function setNotice(id: string, notice: RowNotice | null) {
@@ -271,6 +280,19 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
           </select>
           <select
             className={styles.select}
+            aria-label="LPで絞り込み"
+            value={lpFilter}
+            onChange={(event) => setLpFilter(event.target.value as '' | LpKey)}
+          >
+            <option value="">すべてのLP</option>
+            {LP_KEYS.map((key) => (
+              <option key={key} value={key}>
+                {LP_FORMS[key].label}
+              </option>
+            ))}
+          </select>
+          <select
+            className={styles.select}
             aria-label="並び替え"
             value={sort}
             onChange={(event) => setSort(event.target.value as SortKey)}
@@ -294,7 +316,7 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
               <tr>
                 <th>受付番号</th>
                 <th>受付日時</th>
-                <th>会社名 / 担当者</th>
+                <th>会社名・教室名 / 担当者</th>
                 <th>連絡先</th>
                 <th>規模 / プラン</th>
                 <th>相談内容</th>
@@ -320,6 +342,8 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
                     </td>
                     <td className={styles.nowrap}>{formatDateTime(row.created_at)}</td>
                     <td>
+                      <span className={styles.tag}>{lpLabel(row.lp)}</span>
+                      <br />
                       <strong>{row.company}</strong>
                       <br />
                       {row.name}
@@ -330,7 +354,7 @@ export default function ReservationsAdmin({ initialReservations, loadLimit }: Pr
                       {row.tel}
                     </td>
                     <td className={styles.nowrap}>
-                      {row.company_size}
+                      {sizeLabel(row.lp)} {row.company_size}
                       <br />
                       {row.plan || '未定'}
                     </td>
