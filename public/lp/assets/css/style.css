@@ -126,19 +126,19 @@ a { color: var(--accent); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; }
 .hero__note { font-size: 13px; color: rgba(255,255,255,.65); margin-top: 16px; }
 
-.hero__card {
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.18);
-  border-radius: 20px;
-  padding: 28px;
-  backdrop-filter: blur(6px);
+/* ヒーロー右側：実際にできあがる文章の例（紙のような見た目） */
+.hero__doc {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 28px 30px 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
 }
-.flow-step { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px dashed rgba(255,255,255,.18); }
-.flow-step:last-child { border-bottom: 0; }
-.flow-step__icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.14); display: grid; place-items: center; font-size: 20px; flex-shrink: 0; }
-.flow-step__title { font-weight: 700; font-size: 15px; }
-.flow-step__desc { font-size: 12px; color: rgba(255,255,255,.65); }
-.flow-step__tag { margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--accent-2); color: var(--navy); }
+.hero__doc-head { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--muted); padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+.hero__doc-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.hero .hero__doc p { font-size: 14px; line-height: 1.95; color: var(--ink); margin: 0; }
+.hero__doc-memo { margin-top: 18px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--muted); }
 
 /* ===== Stats ===== */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: -60px; position: relative; z-index: 2; }

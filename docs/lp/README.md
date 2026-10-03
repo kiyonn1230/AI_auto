@@ -16,6 +16,7 @@ AI業務自動化サービス「**テマカル**」のLP・予約管理・屋号
 | `supabase/migrations/20260929000000_reservations.sql` | `reservations` テーブル・RLS・権限 |
 | `supabase/migrations/20260930000000_reservation_plans.sql` | 料金プランの選択肢を「ツール / 個別開発」に変更 |
 | `supabase/migrations/20261001000000_reservation_lp.sql` | どのLPからの予約かを記録する `lp` 列と、LPごとの選択肢 |
+| `supabase/migrations/20261003000000_reservation_visit_kansai.sql` | 訪問エリアを「関西」に変更 |
 | `docs/lp/company-name.md` | 屋号「テマカル」に決めた理由・見送った候補・使い始める前のチェックリスト |
 | `docs/lp/reservation-list-template.csv` | Excel / スプレッドシート用の予約リスト雛形 |
 | `docs/lp/google-apps-script.gs` | 旧構成（スプレッドシート連携）のスクリプト。**現在は使っていません** |
@@ -68,6 +69,7 @@ supabase db push                                   # 未適用のマイグレー
 3. `supabase/migrations/20260929000000_reservations.sql` の中身を貼り付けて実行
 4. `supabase/migrations/20260930000000_reservation_plans.sql` の中身を貼り付けて実行（料金プランの選択肢を「ツール / 個別開発」にする）
 5. `supabase/migrations/20261001000000_reservation_lp.sql` の中身を貼り付けて実行（業種別LPの選択肢を追加する）
+6. `supabase/migrations/20261003000000_reservation_visit_kansai.sql` の中身を貼り付けて実行（訪問エリアを関西にする）
 
 何度流しても同じ状態になるように書いてあるので、うっかり2回実行しても壊れません。
 
@@ -198,7 +200,7 @@ https://<ドメイン>/lp/index.html                        → 流入元「LP�
 - [ ] 学習塾・教室向けツールを、契約した教室ごとに使えるようにする（ログイン・教室ごとの利用制限・請求）。
       今の `/report` は誰でも開けて、使うたびに Claude API の料金がかかるので、**LPからリンクしない**こと
 - [ ] 工務店・リフォーム向けの「LINEやメールで写真とメモを送る」仕組みは、契約ごとに設定する前提。最初の1社の前に作り方を決める
-- [ ] 相談方法の「訪問（首都圏）」を、実際に訪問できる地域に合わせる（`reservations.ts` の `METHODS` と DB の check 制約も）
+- [x] 訪問できる地域を「関西」に設定（変える場合は、各LPのフォーム・`reservations.ts` の `METHODS`・DB の check 制約をそろえる）
 - [ ] 総合LPの「導入イメージ」（不動産・製造業・士業）は想定の例。実績ができたら差し替える
 - [ ] プライバシーポリシー（`public/lp/privacy.html`）の内容が実際の運用と合っているか確認し、制定日を公開日に合わせる。
       外部サービスや保存先、アクセス解析ツールを追加・変更したら、このページも直す

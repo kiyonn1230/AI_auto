@@ -66,7 +66,7 @@ export function sizeLabel(value: string): string {
   return isLpKey(value) ? LP_FORMS[value].sizeLabel : '規模';
 }
 
-export const METHODS = ['オンライン（Zoom / Google Meet）', '電話', '訪問（首都圏）'] as const;
+export const METHODS = ['オンライン（Zoom / Google Meet）', '電話', '訪問（関西）'] as const;
 
 export const STATUSES = [
   { value: 'new', label: '新規' },
