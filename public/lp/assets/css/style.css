@@ -126,19 +126,13 @@ a { color: var(--accent); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 14px; }
 .hero__note { font-size: 13px; color: rgba(255,255,255,.65); margin-top: 16px; }
 
-/* ヒーロー右側：実際にできあがる文章の例（紙のような見た目） */
-.hero__doc {
-  margin: 0;
-  background: #fff;
-  color: var(--ink);
-  border-radius: 6px;
-  padding: 28px 30px 24px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
-}
-.hero__doc-head { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--muted); padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
-.hero__doc-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
-.hero .hero__doc p { font-size: 14px; line-height: 1.95; color: var(--ink); margin: 0; }
-.hero__doc-memo { margin-top: 18px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--muted); }
+/* ヒーロー右側：導入の流れ（番号と細い罫線だけの、飾りの少ない表示） */
+.hero__steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(255,255,255,.22); }
+.hero__step { display: grid; grid-template-columns: 44px 1fr auto; gap: 16px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.22); }
+.hero__step-num { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: rgba(255,255,255,.5); font-variant-numeric: tabular-nums; }
+.hero__step-title { font-weight: 700; font-size: 16px; }
+.hero__step-desc { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 2px; }
+.hero__step-who { font-size: 12px; color: rgba(255,255,255,.6); white-space: nowrap; }
 
 /* ===== Stats ===== */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: -60px; position: relative; z-index: 2; }

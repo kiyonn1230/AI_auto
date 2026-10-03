@@ -53,12 +53,28 @@
           <p class="hero__note">※ オンライン30分・無理な営業は一切いたしません</p>
         </div>
 
-        <figure class="hero__doc" aria-label="問い合わせへの返信の下書きの例">
-          <div class="hero__doc-head"><span>返信の下書き</span><span>確認待ち</span></div>
-          <div class="hero__doc-title">件名：お見積りのご依頼ありがとうございます</div>
-          <p>山田様<br />このたびはお問い合わせいただき、ありがとうございます。納期を確認のうえ、お見積りをお送りいたします。お手数ですが、納品先のご住所と、ご希望の仕様があれば教えていただけますでしょうか。</p>
-          <figcaption class="hero__doc-memo">元の問い合わせ：「100個、来月末までに頼めますか？」</figcaption>
-        </figure>
+        <ol class="hero__steps" aria-label="自動化フローのイメージ">
+          <li class="hero__step">
+            <span class="hero__step-num">01</span>
+            <div><div class="hero__step-title">問い合わせメール受信</div><div class="hero__step-desc">Gmail / Outlook / フォーム</div></div>
+            <span class="hero__step-who">自動</span>
+          </li>
+          <li class="hero__step">
+            <span class="hero__step-num">02</span>
+            <div><div class="hero__step-title">AIが内容を分類・要約</div><div class="hero__step-desc">見積依頼 / サポート / 採用 など</div></div>
+            <span class="hero__step-who">自動</span>
+          </li>
+          <li class="hero__step">
+            <span class="hero__step-num">03</span>
+            <div><div class="hero__step-title">返信文の下書きを作成</div><div class="hero__step-desc">社内ナレッジを参照して回答</div></div>
+            <span class="hero__step-who">自動</span>
+          </li>
+          <li class="hero__step">
+            <span class="hero__step-num">04</span>
+            <div><div class="hero__step-title">スプレッドシートに記録</div><div class="hero__step-desc">担当者へSlack / Chatwork通知</div></div>
+            <span class="hero__step-who">自動</span>
+          </li>
+        </ol>
       </div>
     </section>
 
