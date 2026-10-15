@@ -4,8 +4,9 @@ import { ADMIN_REALM, adminAuthConfigured, isAuthorizedAdmin } from '@/lib/admin
 const TEXT = { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' };
 
 /**
- * /admin 配下を Basic 認証で保護する。
- * Server Action も呼び出し元のページ URL（/admin/...）に POST されるのでここを通るが、
+ * /admin（予約の管理画面）と /report（保護者レポート作成。使うたびに Claude API の料金がかかる）を
+ * Basic 認証で保護する。
+ * Server Action も呼び出し元のページ URL に POST されるのでここを通るが、
  * それに頼り切らず、ページとアクションの中でも同じ判定をもう一度行っている。
  */
 export function middleware(request: NextRequest) {
@@ -27,5 +28,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/report', '/report/:path*'],
 };

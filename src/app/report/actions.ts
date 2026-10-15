@@ -1,6 +1,7 @@
 'use server';
 
 import Anthropic from '@anthropic-ai/sdk';
+import { isAdminRequest } from '@/lib/admin-guard';
 
 export type Tone = 'polite' | 'friendly';
 
@@ -60,6 +61,11 @@ function buildUserPrompt(input: ReportInput): string {
 }
 
 export async function generateReport(input: ReportInput): Promise<ReportResult> {
+  // 誰でも呼べると API の料金を使われてしまう。middleware に加えて、ここでも認証を確かめる
+  if (!(await isAdminRequest())) {
+    return { ok: false, message: '認証が必要です' };
+  }
+
   if (!input.didThisMonth.trim() && !input.improved.trim() && !input.concern.trim()) {
     return { ok: false, message: 'メモを1つ以上入力してください' };
   }
